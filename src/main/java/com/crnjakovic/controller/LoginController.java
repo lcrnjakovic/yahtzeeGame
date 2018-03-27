@@ -16,12 +16,16 @@ public class LoginController {
         return "login.html";
     }
 
+    @GetMapping("/register")
+    public String registerPage(){
+        return "register.html";
+    }
+
     @GetMapping("/")
     public String getHomePage(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         model.addAttribute("username", name);
-        System.out.println(name);
         return "index.html";
     }
 }
