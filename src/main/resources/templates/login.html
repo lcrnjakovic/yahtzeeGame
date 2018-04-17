@@ -5,18 +5,15 @@
     <link rel="stylesheet" href="/css/login.css" />
 </head>
 <body>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
+<p th:if="${param.error}" class="error">
+    Bad Credentials
+</p>
 <div class="login-page">
     <div class="form">
-        <form class="login-form" th:action="@{/login}" method="post">
-            <input type="text" placeholder="username" name="username"/>
-            <input type="password" placeholder="password" name="password"/>
-            <button>login</button>
+        <form class="login-form" th:action="@{/app-login}" method="post">
+            <input type="text" placeholder="username" name="app_username"/>
+            <input type="password" placeholder="password" name="app_password"/>
+            <input type="submit" value="Login"/>
             <p class="message">Not registered? <a href="#">Create an account</a></p>
         </form>
     </div>
