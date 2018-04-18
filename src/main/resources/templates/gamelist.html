@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Yahtzee Home</title>
+    <link rel="stylesheet" href="/css/gamelist.css" />
+    <link rel="stylesheet" href="/css/materialize.min.css" />
+</head>
+<body>
+<noscript>
+    <h2>Sorry! Your browser doesn't support Javascript</h2>
+</noscript>
+<div class="outer">
+    <div class="middle">
+        <div class="inner">
+            <table class="centered">
+                <thead>
+                <tr>
+                    <th>Game Name</th>
+                    <th>Player 1</th>
+                    <th>Player 2</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="game:${games}">
+                    <td><a th:href="@{/app/secure/join-game/{path}(path=${game.id})}" th:text="${game.gameName}"></a></td>
+                    <td th:text="${game.firstPlayer.userName}"></td>
+                    <td th:text="${game.secondPlayer.userName}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="center-align">
+            <a id="centerlink" class="waves-effect waves-light yellow darken-2 btn-large">Create New Game</a>
+            <form class="login-form" th:action="@{/app/secure/new-game}" method="post">
+                <input type="submit" value="Create New Game"/>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="/js/materialize.min.js"></script>
+</body>
+</html>

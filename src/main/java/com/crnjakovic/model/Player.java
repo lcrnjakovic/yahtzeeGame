@@ -1,9 +1,6 @@
 package com.crnjakovic.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -15,7 +12,20 @@ public class Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Player() {
+    }
+
+    public Player(String userName, String password, String role, String fullName) {
+        this.userName = userName;
+        this.password = password;
+        this.role = role;
+        this.fullName = fullName;
+    }
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="user_id")
+    private Long id;
     @Column(name="username")
     private String userName;
     @Column(name="password")
@@ -24,6 +34,14 @@ public class Player implements Serializable {
     private String role;
     @Column(name="full_name")
     private String fullName;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUserName() {
         return userName;
