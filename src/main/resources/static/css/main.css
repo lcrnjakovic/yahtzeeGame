@@ -149,6 +149,15 @@ button.accent {
     position: relative;
 }
 
+.table-container {
+    max-width: 700px;
+    float:left;
+    background-color: #fff;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+    height: 100vh;
+    position: relative;
+}
+
 #chat-page ul {
     list-style-type: none;
     background-color: #FFF;
@@ -294,4 +303,63 @@ button.accent {
     .chat-header h2 {
         font-size: 1.1em;
     }
+}
+
+#scoreboard {
+    margin-left: 10px;
+}
+#scoreboard tr{
+    height: 5.5vh;
+}
+
+#scoreboard th{
+    padding-right: 10px;
+}
+
+.game-container {
+    float: left;
+    width: 40%;
+    height: 100vh;
+}
+
+svg{
+    width:96px;
+    height:96px;
+}
+.animate{
+    animation: roll 0.5s, relax 0.5s;
+}
+
+@keyframes roll {
+    0% {transform: rotate(0deg);width: 96px;height: 96px;}
+    100% {transform: rotate(360deg);width: 106px;height: 106px;}
+}
+@keyframes relax {
+    from {width: 106px;height: 106px;}
+    to {width: 96px;height: 96px;}
+}
+
+#rollDice {
+    margin-left: 15%;
+    margin-top: 10vh;
+    cursor: pointer;
+    position: fixed;
+}
+
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 60%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.inner {
+    margin-left: 15%;
+    margin-right: auto;
+    width: 80%;
 }

@@ -24,8 +24,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void createGame(String userName) {
-        gameRepository.saveAndFlush(new Game(playerRepository.findByUsername(userName), userName+"'s game"));
+    public boolean createGame(String userName) {
+        if(!checkIfUserPlaying(userName)){
+            gameRepository.saveAndFlush(new Game(playerRepository.findByUsername(userName), userName+"'s game"));
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
@@ -46,10 +52,47 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void joinGame(Long gameId, String userName) {
+    public boolean joinGame(Long gameId, String userName) {
         Game joinedGame = gameRepository.findById(gameId).get();
         Player playerTwo = playerRepository.findByUsername(userName);
-        joinedGame.setSecondPlayer(playerTwo);
-        gameRepository.saveAndFlush(joinedGame);
+        Player secondPlayer;
+        if(joinedGame.getSecondPlayer()!=null){
+            secondPlayer = joinedGame.getSecondPlayer();
+        }
+        else{
+            secondPlayer = new Player();
+        }
+        if(joinedGame.getSecondPlayer()==null && !checkIfUserPlaying(userName)){
+            joinedGame.setSecondPlayer(playerTwo);
+            gameRepository.saveAndFlush(joinedGame);
+            return true;
+        }
+        else if(joinedGame.getFirstPlayer().equals(playerTwo) || secondPlayer.equals(playerTwo)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    @Override
+    public Game getGameForUser(Player user) {
+        Game joinedGame = gameRepository.findGameByUser(user);
+        return joinedGame;
+    }
+
+    @Override
+    public boolean checkIfUserPlaying(String userName) {
+        List<Game> tmp = gameRepository.findAll();
+        boolean exists = false;
+        String secondUser = "";
+        for(Game g: tmp){
+            if(g.getSecondPlayer()!=null){secondUser=g.getSecondPlayer().getUserName();}
+            if(g.getFirstPlayer().getUserName().equals(userName) || secondUser.equals(userName)){
+                exists = true;
+            }
+        }
+        return exists;
     }
 }

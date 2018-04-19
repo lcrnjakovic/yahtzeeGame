@@ -1,7 +1,9 @@
 package com.crnjakovic.controller;
 
+import com.crnjakovic.model.Game;
 import com.crnjakovic.service.GameService;
 import com.crnjakovic.service.GameServiceImpl;
+import com.crnjakovic.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,9 @@ public class AppController {
     @Autowired
     private GameService gameService;
 
+    @Autowired
+    private PlayerService playerService;
+
     @GetMapping("login")
     public ModelAndView login() {
         ModelAndView mav = new ModelAndView();
@@ -31,7 +36,12 @@ public class AppController {
         ModelAndView mav = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
+        Game joinedGame = gameService.getGameForUser(playerService.findPlayerByUsername(name));
         model.addAttribute("username", name);
+        model.addAttribute("player1", joinedGame.getFirstPlayer().getUserName());
+        if(joinedGame.getSecondPlayer()!=null){
+            model.addAttribute("player2", joinedGame.getSecondPlayer().getUserName());
+        }
         mav.setViewName("game");
         return mav;
     }
@@ -48,16 +58,24 @@ public class AppController {
     public String createGame(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        gameService.createGame(name);
-        return "redirect:game";
+        if(gameService.createGame(name)){
+            return "redirect:game";
+        }
+        else{
+            return "redirect:home";
+        }
     }
 
     @GetMapping("secure/join-game/{gameId}")
     public String joinGame(@PathVariable int gameId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        gameService.joinGame((long) gameId, name);
-        return "redirect:/app/secure/game";
+        if(gameService.joinGame((long) gameId, name)){
+            return "redirect:/app/secure/game";
+        }
+        else{
+            return "redirect:/app/secure/home";
+        }
     }
 
 }
