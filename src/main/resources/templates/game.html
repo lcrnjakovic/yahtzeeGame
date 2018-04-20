@@ -40,84 +40,84 @@
             </thead>
             <tbody>
             <tr>
-                <td>Aces</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('aces')">Aces</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Twos</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('twos')">Twos</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Threes</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('threes')">Threes</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Fours</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('fours')">Fours</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Fives</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('fives')">Fives</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Sixes</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('sixes')">Sixes</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
                 <td>Sum</td>
-                <td>0</td>
-                <td>0</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
                 <td>Bonus</td>
-                <td>0</td>
-                <td>0</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>x3</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('threekind')">x3</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>x4</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('fourkind')">x4</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Full</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('full')">Full</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Small</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('small')">Small</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Large</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('large')">Large</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Chance</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('chance')">Chance</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
-                <td>Yahtzee</td>
-                <td>0</td>
-                <td>0</td>
+                <td class="clickComb" onclick="saveCombination('yahtzee')">Yahtzee</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             <tr>
                 <td>Total</td>
-                <td>0</td>
-                <td>0</td>
+                <td th:class="${player1}">0</td>
+                <td th:class="${player2}">0</td>
             </tr>
             </tbody>
         </table>
@@ -126,27 +126,27 @@
         <div class="outer">
             <div class="middle">
                 <div class="inner">
-                    <span class="dice">
+                    <span onclick="keepDie(1)" id="die1" class="dice"><input class="diceNumber" type="hidden" value="1"/>
             <svg  viewBox="0 0 24 24">
                 <path fill="#fff" d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z" />
             </svg>
         </span>
-                    <span class="dice">
+                    <span onclick="keepDie(2)" id="die2" class="dice"><input class="diceNumber" type="hidden" value="1"/>
             <svg  viewBox="0 0 24 24">
                 <path fill="#fff" d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z" />
             </svg>
         </span>
-                    <span class="dice">
+                    <span onclick="keepDie(3)" id="die3" class="dice"><input class="diceNumber" type="hidden" value="1"/>
             <svg  viewBox="0 0 24 24">
                 <path fill="#fff" d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z" />
             </svg>
         </span>
-                    <span class="dice">
+                    <span onclick="keepDie(4)" id="die4" class="dice"><input class="diceNumber" type="hidden" value="1"/>
             <svg  viewBox="0 0 24 24">
                 <path fill="#fff" d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z" />
             </svg>
         </span>
-                    <span class="dice">
+                    <span onclick="keepDie(5)" id="die5" class="dice"><input class="diceNumber" type="hidden" value="1"/>
             <svg  viewBox="0 0 24 24">
                 <path fill="#fff" d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z" />
             </svg>
@@ -159,6 +159,7 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="/js/main.js"></script>
 </body>
 </html>

@@ -28,6 +28,12 @@ public class Game {
     private Player firstPlayer;
     @Column(name="game_name")
     private String gameName;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="first_player_score", nullable = true)
+    private Score playerOneScore;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="second_player_score", nullable = true)
+    private Score playerTwoScore;
 
     public Long getId() {
         return id;
@@ -59,5 +65,21 @@ public class Game {
 
     public void setGameName(String gameName) {
         this.gameName = gameName;
+    }
+
+    public Score getPlayerOneScore() {
+        return playerOneScore;
+    }
+
+    public void setPlayerOneScore(Score playerOneScore) {
+        this.playerOneScore = playerOneScore;
+    }
+
+    public Score getPlayerTwoScore() {
+        return playerTwoScore;
+    }
+
+    public void setPlayerTwoScore(Score playerTwoScore) {
+        this.playerTwoScore = playerTwoScore;
     }
 }

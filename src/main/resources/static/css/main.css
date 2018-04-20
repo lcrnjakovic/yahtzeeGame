@@ -363,3 +363,11 @@ svg{
     margin-right: auto;
     width: 80%;
 }
+
+.clickComb {
+    cursor: pointer;
+}
+
+.clickComb:hover {
+    font-weight: bold;
+}

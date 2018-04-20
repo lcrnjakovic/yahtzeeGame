@@ -2,8 +2,10 @@ package com.crnjakovic.service;
 
 import com.crnjakovic.DAO.GameRepository;
 import com.crnjakovic.DAO.PlayerRepository;
+import com.crnjakovic.DAO.ScoreRepository;
 import com.crnjakovic.model.Game;
 import com.crnjakovic.model.Player;
+import com.crnjakovic.model.Score;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,10 +19,12 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
+    private final ScoreRepository scoreRepository;
 
-    public GameServiceImpl(GameRepository gameRepository, PlayerRepository playerRepository) {
+    public GameServiceImpl(GameRepository gameRepository, PlayerRepository playerRepository, ScoreRepository scoreRepository) {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
+        this.scoreRepository = scoreRepository;
     }
 
     @Override
@@ -94,5 +98,64 @@ public class GameServiceImpl implements GameService {
             }
         }
         return exists;
+    }
+
+    @Override
+    public void recordScore(String combination, int result, String userName) {
+        Player currentPlayer = playerRepository.findByUsername(userName);
+        Game ongoingGame = gameRepository.findGameByUser(currentPlayer);
+        Score score;
+        if(ongoingGame.getFirstPlayer().getUserName().equals(currentPlayer.getUserName())){
+            if(ongoingGame.getPlayerOneScore()!=null){
+                score = scoreRepository.findById(ongoingGame.getPlayerOneScore().getId()).get();
+            }
+            else{
+                score = new Score();
+            }
+        }
+        else{
+            if(ongoingGame.getPlayerTwoScore()!=null){
+                score = scoreRepository.findById(ongoingGame.getPlayerTwoScore().getId()).get();
+            }
+            else{
+                score = new Score();
+            }
+        }
+        switch (combination){
+            case "aces": score.setAces(result);
+                break;
+            case "twos": score.setTwos(result);
+                break;
+            case "threes": score.setThrees(result);
+                break;
+            case "fours": score.setFours(result);
+                break;
+            case "fives": score.setFives(result);
+                break;
+            case "sixes": score.setSixes(result);
+                break;
+            case "threekind": score.setThreeKind(result);
+                break;
+            case "fourkind": score.setFourKind(result);
+                break;
+            case "full": score.setFull(result);
+                break;
+            case "small": score.setSmall(result);
+                break;
+            case "large": score.setLarge(result);
+                break;
+            case "chance": score.setChance(result);
+                break;
+            case "yahtzee": score.setYahtzee(result);
+                break;
+        }
+        if(ongoingGame.getFirstPlayer().getUserName().equals(currentPlayer.getUserName())) {
+            ongoingGame.setPlayerOneScore(score);
+        }
+        else{
+            ongoingGame.setPlayerTwoScore(score);
+        }
+        scoreRepository.saveAndFlush(score);
+        gameRepository.saveAndFlush(ongoingGame);
     }
 }

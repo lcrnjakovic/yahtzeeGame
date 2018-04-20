@@ -14,4 +14,5 @@ public interface GameService {
     boolean joinGame(Long gameId, String userName);
     Game getGameForUser(Player user);
     boolean checkIfUserPlaying(String userName);
+    void recordScore(String combination, int result, String userName);
 }
