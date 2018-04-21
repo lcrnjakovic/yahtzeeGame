@@ -9,6 +9,8 @@ var stompClient = null;
 var username = null;
 
 var diceNumbers = [];
+var rollCounter = 0;
+var second = true;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -17,7 +19,9 @@ var colors = [
 
 function connect(loggedUser) {
     username = loggedUser;
-    console.log(username);
+    if(username===document.getElementById("player2").textContent.toString()){
+        rollCounter = 3;
+    }
     if(username) {
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
@@ -100,6 +104,20 @@ function onMessageReceived(payload) {
         messageArea.scrollTop = messageArea.scrollHeight;
     }
     else if(message.type === 'SCORE'){
+        if(message.sender!==username){
+            rollCounter = 0;
+            if(!second){
+                for(var i = 1; i<=5; i++){
+                    document.getElementById("die"+i).classList.add("dice");
+                    document.getElementById("die"+i).classList.remove("kept");
+                }
+                for(var j = 0; j<document.getElementsByClassName("dice").length; j++){
+                    var n = rand(0,6);
+                    var d = document.getElementsByClassName("dice")[j];
+                    dice(n, d);
+                }
+            }
+        }
         var records = document.getElementsByClassName(message.sender);
         console.log(records);
         var content = message.content.split(",");
@@ -190,29 +208,35 @@ function dice(num, element){
 }
 
 document.getElementById("rollDice").onclick = function(){
-    var $ = document.getElementsByClassName("dice");
-    for(var i = 0; i<$.length; i++){
-        var num = rand(0,5);
-        dice(num, $[i]);
-        var x = $[i].childNodes[1];
-        x.setAttribute("class", "animate");
-        setTimeout(function(){x.removeAttribute("class")}, 500);
+    if(rollCounter!==3){
+        second = false;
+        var $ = document.getElementsByClassName("dice");
+        for(var i = 0; i<$.length; i++){
+            var num = rand(0,5);
+            dice(num, $[i]);
+            var x = $[i].childNodes[1];
+            x.setAttribute("class", "animate");
+            setTimeout(function(){x.removeAttribute("class")}, 500);
+        }
+        rollCounter++;
     }
-
 };
 
 function keepDie(order){
-    document.getElementById("die"+order).classList.toggle("dice");
+    if(rollCounter!==3){
+        document.getElementById("die"+order).classList.toggle("dice");
+        document.getElementById("die"+order).classList.toggle("kept");
+    }
 }
 
 function saveCombination(input){
+    rollCounter = 3;
     var result = 0;
     diceNumbers = [];
     for(var i = 0; i<document.getElementsByClassName("diceNumber").length; i++){
         console.log(document.getElementsByClassName("diceNumber")[i].value);
         diceNumbers.push(parseInt(document.getElementsByClassName("diceNumber")[i].value));
     }
-    console.log(diceNumbers);
     switch (input) {
         case "aces":
             result = getNumberResult(1);
@@ -242,16 +266,16 @@ function saveCombination(input){
             result = getFull();
             break;
         case "small":
-            score.setSmall(result);
+            result = getSmall();
             break;
         case "large":
-            score.setLarge(result);
+            result = getLarge();
             break;
         case "chance":
-            score.setChance(result);
+            result = getChance();
             break;
         case "yahtzee":
-            result = getKind(5);
+            result = getYahtzee();
             break;
     }
     var messageContent = input + "," + result;
@@ -292,11 +316,22 @@ function getKind(number){
             result = number*key;
         }
     }
+    if(result!==0){
+        for(var key2 in dict){
+            if(dict[key2]!==0 && dict[key2]!==number){
+                if(dict[key2]===2){
+                    result += 2*parseInt(key2);
+                }
+                else{
+                    result += parseInt(key2);
+                }
+            }
+        }
+    }
     return result;
 }
 
 function getFull(){
-    var result = 0;
     var dict = {};
     var three = false;
     var two = false;
@@ -314,19 +349,82 @@ function getFull(){
         if(dict[key] === 3){
             three = true;
             used = key;
-            result = 3*key;
         }
     }
     for(var key2 in dict){
         if(dict[key2] === 2 && key2!==used){
             two = true;
-            result += 2*key2;
         }
     }
     if(two && three){
-        return result;
+        return 25;
     }
     else{
         return 0;
     }
+}
+
+function getChance(){
+    var result = 0;
+    for(var i = 0; i<diceNumbers.length; i++){
+        result += diceNumbers[i];
+    }
+    return result;
+}
+
+function getSmall() {
+    if(contains(diceNumbers, 1) && contains(diceNumbers, 2) && contains(diceNumbers, 3) && contains(diceNumbers, 4)){
+        return 30;
+    }
+    else if(contains(diceNumbers, 2) && contains(diceNumbers, 3) && contains(diceNumbers, 4) && contains(diceNumbers, 5)){
+        return 30;
+    }
+    else if(contains(diceNumbers, 3) && contains(diceNumbers, 4) && contains(diceNumbers, 5) && contains(diceNumbers, 6)){
+        return 30;
+    }
+    else{
+        return 0;
+    }
+}
+
+function getLarge(){
+    if(contains(diceNumbers, 1) && contains(diceNumbers, 2) && contains(diceNumbers, 3) && contains(diceNumbers, 4) && contains(diceNumbers, 5)){
+        return 40;
+    }
+    else if(contains(diceNumbers, 2) && contains(diceNumbers, 3) && contains(diceNumbers, 4) && contains(diceNumbers, 5) && contains(diceNumbers, 6)){
+        return 40;
+    }
+    else{
+        return 0;
+    }
+}
+
+function getYahtzee(){
+    var result = 0;
+    var dict = {};
+    dict[1] = 0;
+    dict[2] = 0;
+    dict[3] = 0;
+    dict[4] = 0;
+    dict[5] = 0;
+    dict[6] = 0;
+    for(var i = 0; i<diceNumbers.length; i++){
+        dict[diceNumbers[i]] += 1;
+    }
+    for(var key in dict){
+        if(dict[key] === 5){
+            result = 50;
+        }
+    }
+    return result;
+}
+
+function contains(a, obj) {
+    var i = a.length;
+    while (i--) {
+        if (a[i] === obj) {
+            return true;
+        }
+    }
+    return false;
 }

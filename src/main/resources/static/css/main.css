@@ -371,3 +371,7 @@ svg{
 .clickComb:hover {
     font-weight: bold;
 }
+
+.kept {
+    opacity: 0.5;
+}
