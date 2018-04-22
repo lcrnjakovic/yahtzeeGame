@@ -31,9 +31,8 @@
             </table>
         </div>
         <div class="center-align">
-            <a id="centerlink" class="waves-effect waves-light yellow darken-2 btn-large">Create New Game</a>
-            <form class="login-form" th:action="@{/app/secure/new-game}" method="post">
-                <input type="submit" value="Create New Game"/>
+            <form th:action="@{/app/secure/new-game}" method="post">
+                <button type="submit" class="waves-effect waves-light yellow darken-2 btn-large">Create New Game</button>
             </form>
         </div>
     </div>

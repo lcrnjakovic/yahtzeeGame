@@ -2,7 +2,6 @@ package com.crnjakovic.controller;
 
 import com.crnjakovic.model.Game;
 import com.crnjakovic.service.GameService;
-import com.crnjakovic.service.GameServiceImpl;
 import com.crnjakovic.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -52,6 +51,16 @@ public class AppController {
         mav.addObject("games", gameService.getAllGames());
         mav.setViewName("gamelist");
         return mav;
+    }
+
+    @GetMapping("secure/back-home")
+    public String backHome(@RequestParam String attr){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        if(attr.equals("left")){
+            gameService.deleteGame(name);
+        }
+        return "redirect:home";
     }
 
     @PostMapping("secure/new-game")

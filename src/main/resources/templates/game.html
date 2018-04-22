@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Yahtzee Home</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous" />
     <link rel="stylesheet" href="/css/main.css" />
 </head>
 <body th:onload="'connect(\''+${username}+'\');'">
@@ -34,7 +35,7 @@
             <thead>
             <tr>
                 <th>Combination</th>
-                <th th:text="${player1}"></th>
+                <th id="player1" th:text="${player1}"></th>
                 <th id="player2" th:text="${player2}"></th>
             </tr>
             </thead>
@@ -124,6 +125,7 @@
     </div>
     <div class="game-container">
         <div class="outer">
+            <a id="exitbutton" class="reset-this" th:href="@{/app/secure/back-home(attr='left')}"><i class="fas fa-times fa-3x"></i></a>
             <div class="middle">
                 <div class="inner">
                     <span onclick="keepDie(1)" id="die1" class="dice"><input class="diceNumber" type="hidden" value="1"/>
@@ -151,7 +153,7 @@
                 <path fill="#fff" d="M5,3H19A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z" />
             </svg>
         </span>
-                    <h2 id="rollDice">Click to Roll</h2>
+                    <h2 id="rollDice">Wait for Player 2</h2>
                 </div>
             </div>
         </div>

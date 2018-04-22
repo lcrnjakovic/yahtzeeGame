@@ -1,6 +1,7 @@
 package com.crnjakovic.controller;
 
 import com.crnjakovic.model.ChatMessage;
+import com.crnjakovic.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class WebSocketEventListener {
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
+    @Autowired
+    private GameService gameService;
+
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         logger.info("Received a new web socket connection");
@@ -38,7 +42,9 @@ public class WebSocketEventListener {
             ChatMessage chatMessage = new ChatMessage();
             chatMessage.setType(ChatMessage.MessageType.LEAVE);
             chatMessage.setSender(username);
-
+            if(gameService.checkIfUserPlaying(username)){
+                gameService.deleteGame(username);
+            }
             messagingTemplate.convertAndSend("/topic/public", chatMessage);
         }
     }

@@ -158,4 +158,15 @@ public class GameServiceImpl implements GameService {
         scoreRepository.saveAndFlush(score);
         gameRepository.saveAndFlush(ongoingGame);
     }
+
+    @Override
+    public void deleteGame(String player) {
+        Game toDelete = gameRepository.findGameByUser(playerRepository.findByUsername(player));
+        try{
+            gameRepository.delete(toDelete);
+        }
+        catch (Exception e){
+            System.out.println("Game already disbanded");
+        }
+    }
 }

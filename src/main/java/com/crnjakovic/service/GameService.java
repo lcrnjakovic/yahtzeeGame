@@ -15,4 +15,5 @@ public interface GameService {
     Game getGameForUser(Player user);
     boolean checkIfUserPlaying(String userName);
     void recordScore(String combination, int result, String userName);
+    void deleteGame(String player);
 }
