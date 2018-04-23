@@ -13,6 +13,7 @@ var rollCounter = 3;
 var second = true;
 var enabled = false;
 var otherPlayer = "";
+var gameCounter = 0;
 
 var scoreDict = {};
 scoreDict['aces'] = 0;
@@ -159,6 +160,7 @@ function onMessageReceived(payload) {
                     }
                 }
             }
+            gameCounter++;
             var records = document.getElementsByClassName(message.sender);
             var content = message.content.split(",");
             var combo = content[0];
@@ -183,30 +185,77 @@ function onMessageReceived(payload) {
             }
             total += sum + bonus;
             records[scoreDict['total']].innerHTML = total;
+            if(gameCounter === 26){
+                var p1records = document.getElementsByClassName(document.getElementById("player1").textContent);
+                var p2records = document.getElementsByClassName(document.getElementById("player2").textContent);
+                var p1score = parseInt(p1records[scoreDict['total']].textContent);
+                var p2score = parseInt(p2records[scoreDict['total']].textContent);
+                if(p1score > p2score){
+                    alert(document.getElementById("player1").textContent + " wins the game!");
+                    window.location = "back-home?attr=left";
+
+                }
+                else if(p2score > p1score){
+                    alert(document.getElementById("player2").textContent + " wins the game!");
+                    window.location = "back-home?attr=left";
+                }
+                else{
+                    alert("Tied game!");
+                    window.location = "back-home?attr=left";
+                }
+
+            }
         }
     }
     else {
-        messageElement.classList.add('chat-message');
+        if(message.content.substr(0, 5) === "!game"){
+            if(message.sender === username || message.sender === otherPlayer){
+                messageElement.classList.add('chat-message');
 
-        var avatarElement = document.createElement('i');
-        var avatarText = document.createTextNode(message.sender[0]);
-        avatarElement.appendChild(avatarText);
-        avatarElement.style['background-color'] = getAvatarColor(message.sender);
+                var avatarElement = document.createElement('i');
+                var avatarText = document.createTextNode(message.sender[0]);
+                avatarElement.appendChild(avatarText);
+                avatarElement.style['background-color'] = getAvatarColor(message.sender);
 
-        messageElement.appendChild(avatarElement);
+                messageElement.appendChild(avatarElement);
 
-        var usernameElement = document.createElement('span');
-        var usernameText = document.createTextNode(message.sender);
-        usernameElement.appendChild(usernameText);
-        messageElement.appendChild(usernameElement);
-        textElement = document.createElement('p');
-        messageText = document.createTextNode(message.content);
-        textElement.appendChild(messageText);
+                var usernameElement = document.createElement('span');
+                var usernameText = document.createTextNode(message.sender);
+                usernameElement.appendChild(usernameText);
+                messageElement.appendChild(usernameElement);
+                textElement = document.createElement('p');
+                messageText = document.createTextNode("[Private] " + message.content.substr(5));
+                textElement.appendChild(messageText);
 
-        messageElement.appendChild(textElement);
+                messageElement.appendChild(textElement);
 
-        messageArea.appendChild(messageElement);
-        messageArea.scrollTop = messageArea.scrollHeight;
+                messageArea.appendChild(messageElement);
+                messageArea.scrollTop = messageArea.scrollHeight;
+            }
+        }
+        else {
+            messageElement.classList.add('chat-message');
+
+            avatarElement = document.createElement('i');
+            avatarText = document.createTextNode(message.sender[0]);
+            avatarElement.appendChild(avatarText);
+            avatarElement.style['background-color'] = getAvatarColor(message.sender);
+
+            messageElement.appendChild(avatarElement);
+
+            usernameElement = document.createElement('span');
+            usernameText = document.createTextNode(message.sender);
+            usernameElement.appendChild(usernameText);
+            messageElement.appendChild(usernameElement);
+            textElement = document.createElement('p');
+            messageText = document.createTextNode(message.content);
+            textElement.appendChild(messageText);
+
+            messageElement.appendChild(textElement);
+
+            messageArea.appendChild(messageElement);
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
     }
 
 

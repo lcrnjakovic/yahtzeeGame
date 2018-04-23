@@ -1,5 +1,6 @@
 package com.crnjakovic.service;
 
+import com.crnjakovic.controller.UserDto;
 import com.crnjakovic.model.Player;
 
 /**
@@ -7,4 +8,5 @@ import com.crnjakovic.model.Player;
  */
 public interface PlayerService {
     Player findPlayerByUsername(String userName);
+    Player registerNewUserAcount(UserDto userDto);
 }
