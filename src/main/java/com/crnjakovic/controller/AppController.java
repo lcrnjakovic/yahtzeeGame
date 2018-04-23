@@ -4,6 +4,8 @@ import com.crnjakovic.model.Game;
 import com.crnjakovic.model.Player;
 import com.crnjakovic.service.GameService;
 import com.crnjakovic.service.PlayerService;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -118,6 +120,10 @@ public class AppController {
             return new ModelAndView("register", "user", accountDto);
         }
         else {
+            accountDto.setUserName(Jsoup.clean(accountDto.getUserName(), Whitelist.basic()));
+            accountDto.setFullName(Jsoup.clean(accountDto.getFullName(), Whitelist.basic()));
+            accountDto.setPassword(Jsoup.clean(accountDto.getPassword(), Whitelist.basic()));
+            accountDto.setPasswordConfirm(Jsoup.clean(accountDto.getPasswordConfirm(), Whitelist.basic()));
             return new ModelAndView("redirect:/app/secure/home");
         }
     }

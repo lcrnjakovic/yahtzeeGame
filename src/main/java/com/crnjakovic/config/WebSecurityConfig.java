@@ -32,12 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/app-login")
                 .usernameParameter("app_username")
                 .passwordParameter("app_password")
-                .defaultSuccessUrl("/app/secure/home")
-                .and().logout()
-                .logoutUrl("/app-logout")
-                .logoutSuccessUrl("/app/login")
-                .and().exceptionHandling()
-                .accessDeniedPage("/app/error");
+                .defaultSuccessUrl("/app/secure/home");
     }
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
